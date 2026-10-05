@@ -18,7 +18,7 @@
     </a>
     <nav class="top-nav" aria-label="Điều hướng chính">
       <button class="nav-button active" data-view="library" type="button">Từ điển</button>
-      <button class="nav-button" data-view="review" type="button">Ôn tập <span class="nav-count" id="review-count">0</span></button>
+      <button class="nav-button" data-view="review" type="button">Ôn tập</button>
     </nav>
     <div class="top-actions">
       <button class="quiet-button" id="settings-button" type="button">Cài đặt</button>
@@ -31,16 +31,23 @@
 
   <main class="app-shell" id="top">
     <aside class="sidebar" aria-label="Thư viện từ vựng">
-      <div class="sidebar-label">Thư viện</div>
-      <button class="side-link active" data-collection="all" type="button" aria-pressed="true"><span class="side-icon blue-icon">A</span><span>Từ chuyên ngành</span><span class="side-count" id="count-all">0</span></button>
-      <div class="domain-links" id="domain-links" aria-label="Lĩnh vực chuyên ngành"></div>
+      <div class="sidebar-label" id="sidebar-title">Thư viện</div>
+      <div class="library-sidebar" id="library-sidebar">
+        <div class="domain-links" id="domain-links" aria-label="Chủ đề từ vựng"></div>
+        <button class="side-link add-topic-link" id="add-topic-button" type="button"><span class="side-icon blue-icon">＋</span><span>Thêm chủ đề</span></button>
 
-      <div class="sidebar-rule"></div>
-      <div class="sidebar-label filter-label">Tiến độ học</div>
-      <button class="side-link" data-collection="favorites" type="button" aria-pressed="false"><span class="side-icon blue-icon">&#9825;</span><span>Yêu thích</span><span class="side-count" id="count-favorites">0</span></button>
-      <button class="side-link" data-collection="new" type="button" aria-pressed="false"><span class="side-icon blue-icon">01</span><span>Mới thêm</span><span class="side-count" id="count-new">0</span></button>
-      <button class="side-link" data-collection="learning" type="button" aria-pressed="false"><span class="side-icon blue-icon">02</span><span>Đang học</span><span class="side-count" id="count-learning">0</span></button>
-      <button class="side-link" data-collection="mastered" type="button" aria-pressed="false"><span class="side-icon blue-icon">03</span><span>Đã nắm vững</span><span class="side-count" id="count-mastered">0</span></button>
+        <div class="sidebar-rule"></div>
+        <div class="sidebar-label filter-label">Tiến độ học</div>
+        <button class="side-link" data-collection="favorites" type="button" aria-pressed="false"><span class="side-icon blue-icon">&#9825;</span><span>Yêu thích</span><span class="side-count" id="count-favorites">0</span></button>
+        <button class="side-link" data-collection="new" type="button" aria-pressed="false"><span class="side-icon blue-icon">01</span><span>Mới thêm</span><span class="side-count" id="count-new">0</span></button>
+        <button class="side-link" data-collection="mastered" type="button" aria-pressed="false"><span class="side-icon blue-icon">02</span><span>Đã nắm vững</span><span class="side-count" id="count-mastered">0</span></button>
+      </div>
+      <nav class="review-sidebar" id="review-sidebar" aria-label="Khu vực ôn tập" hidden>
+        <button class="review-side-link active" data-review-section="review-history" type="button"><span class="side-icon blue-icon">01</span><span>Lịch sử học tập</span></button>
+        <button class="review-side-link" data-review-section="review-insights" type="button"><span class="side-icon blue-icon">02</span><span>Phân tích năng lực</span></button>
+        <button class="review-side-link" data-review-section="review-test" type="button"><span class="side-icon blue-icon">03</span><span>Làm bài Test</span></button>
+        <button class="review-side-link" data-review-section="review-chart" type="button"><span class="side-icon blue-icon">04</span><span>Thống kê kết quả</span></button>
+      </nav>
       <div class="sidebar-note">
         <span class="note-dot" aria-hidden="true"></span>
         <span>Kho từ vựng của riêng bạn</span>
@@ -52,7 +59,7 @@
       <div class="page-heading">
         <div>
           <div class="eyebrow"><span class="eyebrow-line"></span> ENGLISH FOR TECHNOLOGY</div>
-          <h1 id="page-title">Từ chuyên ngành</h1>
+          <h1 id="page-title">Từ điển</h1>
           <p class="page-subtitle" id="page-subtitle">Tra cứu thuật ngữ theo lĩnh vực và lưu lại từ cần học.</p>
         </div>
         <div class="stats-strip" aria-label="Thống kê từ vựng">
@@ -82,6 +89,13 @@
       </section>
 
       <section class="review-view" id="review-view" hidden>
+        <div class="review-dashboard">
+          <section class="review-panel" id="review-history"><div class="eyebrow"><span class="eyebrow-line"></span> LỊCH SỬ</div><h2>Lịch sử học tập</h2><div id="test-history-content"></div></section>
+          <section class="review-panel" id="review-insights" hidden><div class="eyebrow"><span class="eyebrow-line"></span> NĂNG LỰC</div><h2>Phân tích năng lực</h2><p>Đánh giá xu hướng sai, nhận diện nhóm từ bạn còn yếu và đưa ra mẹo dễ nhớ.</p><div id="test-insights-content"></div></section>
+          <section class="review-panel review-test-panel" id="review-test" hidden><div><div class="eyebrow"><span class="eyebrow-line"></span> BẮT ĐẦU</div><h2>Bắt đầu Test</h2><p>Đề test tự động lấy các từ hiện có trong Thư viện.</p></div><button class="primary-button" id="start-test-button" type="button">Bắt đầu Test</button></section>
+          <section class="review-panel" id="review-chart" hidden><div class="eyebrow"><span class="eyebrow-line"></span> THỐNG KÊ</div><h2>Thống kê kết quả</h2><div id="test-chart-summary"></div><div class="score-chart" id="score-chart" aria-label="Biểu đồ điểm bài test"></div></section>
+        </div>
+        <section class="quick-review-section" id="quick-review-section" hidden>
         <div class="review-heading">
           <div><div class="eyebrow"><span class="eyebrow-line"></span> ÔN TẬP NHANH</div><h2>Ôn tập nhẹ nhàng</h2><p>Mỗi lần một từ. Thử nhớ nghĩa trước khi lật thẻ.</p></div>
           <button class="quiet-button" id="shuffle-button" type="button">Trộn thẻ</button>
@@ -101,6 +115,7 @@
           <button class="round-button next-button" id="next-card" type="button" aria-label="Thẻ tiếp theo">→</button>
           <button class="learned-button" id="mark-mastered" type="button">Đã nhớ từ này</button>
         </div>
+        </section>
       </section>
       <footer class="page-footer"><span class="footer-stamp">G</span><span>Cá nhân, gọn gàng, luôn sẵn sàng tra cứu.</span><span class="footer-count" id="footer-count">0 TỪ</span></footer>
     </section>
@@ -109,6 +124,32 @@
   <dialog class="detail-dialog" id="detail-dialog" aria-labelledby="detail-term">
     <div class="dialog-topline"><span class="dialog-kicker">GHI CHÚ TỪ VỰNG</span><button class="icon-button" data-close="detail-dialog" type="button" aria-label="Đóng">×</button></div>
     <div id="detail-content"></div>
+  </dialog>
+
+  <dialog class="form-dialog topic-dialog" id="topic-dialog" aria-labelledby="topic-title">
+    <form id="topic-form" method="dialog">
+      <div class="dialog-topline"><span class="dialog-kicker">CHỦ ĐỀ TỪ VỰNG</span><button class="icon-button" data-close="topic-dialog" type="button" aria-label="Đóng">×</button></div>
+      <h2 id="topic-title">Thêm chủ đề</h2>
+      <p class="form-intro">Tạo một chủ đề riêng để nhóm các thuật ngữ của bạn.</p>
+      <label class="field"><span>Tên chủ đề <b>*</b></span><input id="topic-name" required maxlength="60" placeholder="Ví dụ: Product management"></label>
+      <p class="form-error" id="topic-error" role="alert"></p>
+      <div class="form-actions"><button class="quiet-button" data-close="topic-dialog" type="button">Hủy</button><button class="primary-button" type="submit">Thêm chủ đề</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="test-dialog" id="test-dialog" aria-labelledby="test-title">
+    <div class="dialog-topline"><span class="dialog-kicker">ENGLISH VOCABULARY TEST</span><button class="icon-button" data-close="test-dialog" type="button" aria-label="Đóng">×</button></div>
+    <div class="test-dialog-body">
+      <div id="test-question-view">
+      <div class="test-progress"><span id="test-progress">Question 1 / 15</span><span id="test-type">Meaning</span></div>
+      <h2 id="test-title">Vocabulary test</h2>
+      <p class="test-instruction" id="test-instruction"></p>
+      <div class="test-options" id="test-options"></div>
+      <p class="form-error" id="test-error" role="alert"></p>
+      <div class="form-actions"><button class="quiet-button" id="test-cancel" type="button">Thoát</button><button class="primary-button" id="test-next" type="button">Next question</button></div>
+      </div>
+      <div id="test-result" hidden></div>
+    </div>
   </dialog>
 
   <dialog class="settings-dialog" id="settings-dialog" aria-labelledby="settings-title">

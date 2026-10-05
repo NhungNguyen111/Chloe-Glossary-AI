@@ -1,5 +1,7 @@
 const STORAGE_KEY = "nhung-glossary-v1";
 const THEME_STORAGE_KEY = "nhung-glossary-theme-v1";
+const DOMAIN_STORAGE_KEY = "nhung-glossary-domains-v1";
+const TEST_HISTORY_KEY = "nhung-glossary-test-history-v1";
 const THEMES = new Set(["default", "soft-pink", "baby-blue"]);
 
 const domainGroups = [
@@ -108,6 +110,30 @@ const starterTerms = [
   }
 ];
 
+const additionalStarterTerms = [
+  ["Sprint", "/sprɪnt/", "A short, fixed period in which a team completes planned work.", "Một chu kỳ ngắn, cố định để nhóm hoàn thành công việc đã lên kế hoạch.", "Project management", "The team plans the next sprint during the review meeting."],
+  ["Backlog", "/ˈbæk.lɔːɡ/", "A prioritized list of work that still needs to be done.", "Danh sách ưu tiên các công việc vẫn cần được thực hiện.", "Project management", "The product owner reordered the backlog before planning."],
+  ["Milestone", "/ˈmaɪl.stoʊn/", "An important point or achievement in a project timeline.", "Một mốc quan trọng trong tiến độ hoặc thành tựu của dự án.", "Project management", "Launching the beta version was a major milestone."],
+  ["Requirement", "/rɪˈkwaɪər.mənt/", "A condition or capability that a product must satisfy.", "Điều kiện hoặc khả năng mà sản phẩm phải đáp ứng.", "Business Analysis", "The analyst documented each requirement with acceptance criteria."],
+  ["Acceptance criteria", "/əkˈsep.təns kraɪˈtɪr.i.ə/", "Conditions that must be met for a requirement to be accepted.", "Các điều kiện phải đạt để một yêu cầu được chấp nhận.", "Business Analysis", "The story cannot be closed until its acceptance criteria are met."],
+  ["User story", "/ˈjuː.zər ˌstɔːr.i/", "A short description of a feature from a user's perspective.", "Mô tả ngắn về một tính năng từ góc nhìn người dùng.", "Business Analysis", "The team refined the user story before estimating it."],
+  ["Endpoint", "/ˈend.pɔɪnt/", "A specific URL or interface where an API receives requests.", "URL hoặc giao diện cụ thể nơi API nhận request.", "Web", "The mobile app calls the login endpoint."],
+  ["Throughput", "/ˈθruː.pʊt/", "The amount of data or work processed in a given time.", "Lượng dữ liệu hoặc công việc được xử lý trong một khoảng thời gian.", "Architecture & Systems", "The new queue design increased throughput during peak hours."],
+  ["Scalability", "/ˌskeɪ.ləˈbɪl.ə.ti/", "The ability of a system to handle more load by adding resources.", "Khả năng hệ thống xử lý tải lớn hơn khi bổ sung tài nguyên.", "Architecture & Systems", "Horizontal scalability helps the service handle more traffic."],
+  ["Containerization", "/kənˌteɪ.nər.aɪˈzeɪ.ʃən/", "Packaging software with its dependencies into an isolated container.", "Đóng gói phần mềm cùng dependency trong một container biệt lập.", "DevOps & Cloud", "Containerization makes the service easier to run consistently."],
+  ["Rollback", "/ˈroʊl.bæk/", "A return to a previous stable version after a problematic change.", "Việc quay về phiên bản ổn định trước đó sau thay đổi có vấn đề.", "DevOps & Cloud", "The team performed a rollback after the incident."],
+  ["Vulnerability", "/ˌvʌl.nər.əˈbɪl.ə.ti/", "A weakness that could be exploited to harm a system.", "Điểm yếu có thể bị khai thác để gây hại cho hệ thống.", "Security", "The scan found a vulnerability in the outdated library."],
+  ["Encryption", "/ɪnˈkrɪp.ʃən/", "The process of converting data into a form that unauthorized people cannot read.", "Quá trình chuyển dữ liệu sang dạng người không được phép không thể đọc.", "Security", "Encryption protects the data while it is in transit."],
+  ["Schema", "/ˈskiː.mə/", "The structure that defines how data is organized and related.", "Cấu trúc định nghĩa cách dữ liệu được tổ chức và liên kết.", "Data", "The team updated the database schema for the new field."],
+  ["Insight", "/ˈɪn.saɪt/", "A useful understanding gained from data or experience.", "Sự hiểu biết hữu ích rút ra từ dữ liệu hoặc kinh nghiệm.", "Data", "The dashboard gave the team an insight into user behavior."]
+].map(([term, pronunciation, definition_en, meaning_vi, domain, example]) => ({
+  id: `seed-${term.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-")}`, term, full_form: "", pronunciation,
+  meaning_vi, definition_en, part_of_speech: "noun", domains: [domain], roles: [], difficulty: "Intermediate",
+  context: example, examples: [{ en: example, vi: meaning_vi }], related_terms: [], common_mistakes: "",
+  tags: [domain.toLowerCase()], source: "Starter library", status: "new", favorite: false,
+  created_at: "2026-10-01T10:00:00.000Z", updated_at: "2026-10-01T10:00:00.000Z"
+}));
+
 const elements = {
   termList: document.querySelector("#term-list"), search: document.querySelector("#search-input"),
   domainLinks: document.querySelector("#domain-links"), sort: document.querySelector("#sort-select"),
@@ -119,6 +145,7 @@ const elements = {
 };
 
 let terms = loadTerms();
+let customDomains = loadCustomDomains();
 let activeCollection = "all";
 let activeDomain = "";
 let currentView = "library";
@@ -128,6 +155,25 @@ let reviewQueue = [];
 let reviewIndex = 0;
 let answerVisible = false;
 let toastTimer;
+let activeReviewSection = "review-history";
+let testQuestions = [];
+let testIndex = 0;
+let testScore = 0;
+let testSelected = [];
+let testStartedAt = null;
+
+function loadCustomDomains() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(DOMAIN_STORAGE_KEY) || "[]");
+    return Array.isArray(stored) ? stored.filter(item => typeof item === "string" && item.trim()) : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveCustomDomains() {
+  localStorage.setItem(DOMAIN_STORAGE_KEY, JSON.stringify(customDomains));
+}
 
 function loadTheme() {
   const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
@@ -151,11 +197,14 @@ function applyTheme(theme) {
 function loadTerms() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) return structuredClone(starterTerms);
+    if (!stored) return structuredClone([...starterTerms, ...additionalStarterTerms]);
     const parsed = JSON.parse(stored);
-    return Array.isArray(parsed) ? parsed.map(migrateStarterCopy) : structuredClone(starterTerms);
+    if (!Array.isArray(parsed)) return structuredClone([...starterTerms, ...additionalStarterTerms]);
+    const existingIds = new Set(parsed.map(term => term.id));
+    const missingSeeds = additionalStarterTerms.filter(term => !existingIds.has(term.id));
+    return [...parsed.map(migrateStarterCopy), ...structuredClone(missingSeeds)];
   } catch (error) {
-    return structuredClone(starterTerms);
+    return structuredClone([...starterTerms, ...additionalStarterTerms]);
   }
 }
 
@@ -217,7 +266,10 @@ function render() {
   renderDomainLinks();
   updateSidebarSelection();
   renderTerms();
-  if (currentView === "review") renderReviewCard();
+  if (currentView === "review") {
+    renderReviewCard();
+    renderReviewStats();
+  }
 }
 
 function updateCounts() {
@@ -228,14 +280,11 @@ function updateCounts() {
     learning: terms.filter(term => term.status === "learning").length,
     mastered: terms.filter(term => term.status === "mastered").length
   };
-  document.querySelector("#count-all").textContent = counts.all;
   document.querySelector("#count-favorites").textContent = counts.favorites;
   document.querySelector("#count-new").textContent = counts.new;
-  document.querySelector("#count-learning").textContent = counts.learning;
   document.querySelector("#count-mastered").textContent = counts.mastered;
   document.querySelector("#stat-total").textContent = counts.all;
   document.querySelector("#stat-learned").textContent = counts.mastered;
-  document.querySelector("#review-count").textContent = counts.new + counts.learning;
   document.querySelector("#footer-count").textContent = `${counts.all} TỪ`;
 }
 
@@ -244,7 +293,8 @@ function getDomainGroups() {
   const extraDomains = [...new Set(terms.flatMap(term => term.domains || []))]
     .filter(domain => !knownAliases.has(normalizeText(domain)))
     .sort((first, second) => first.localeCompare(second));
-  return [...domainGroups, ...extraDomains.map(name => ({ name, icon: "IT", aliases: [name] }))];
+  const savedDomains = customDomains.filter(name => !knownAliases.has(normalizeText(name)) && !extraDomains.some(item => normalizeText(item) === normalizeText(name)));
+  return [...domainGroups, ...extraDomains.map(name => ({ name, icon: "IT", aliases: [name] })), ...savedDomains.map(name => ({ name, icon: "IT", aliases: [name] }))];
 }
 
 function matchesDomain(term, groupName) {
@@ -295,7 +345,7 @@ function visibleTerms() {
 function renderTerms() {
   const visible = visibleTerms();
   document.querySelector("#results-count").textContent = `${visible.length} từ`;
-  const collectionNames = { all: "Từ chuyên ngành", favorites: "Yêu thích", new: "Mới thêm", learning: "Đang học", mastered: "Đã nắm vững" };
+  const collectionNames = { all: "Từ điển", favorites: "Yêu thích", new: "Mới thêm", learning: "Đang học", mastered: "Đã nắm vững" };
   document.querySelector("#active-filter-label").textContent = activeDomain || collectionNames[activeCollection];
   if (!visible.length) {
     const domainIsEmpty = activeDomain && !terms.some(term => matchesDomain(term, activeDomain));
@@ -412,10 +462,190 @@ function setView(view) {
   currentView = view;
   elements.library.hidden = view !== "library";
   elements.review.hidden = view !== "review";
+  document.querySelector("#library-sidebar").hidden = view !== "library";
+  document.querySelector("#review-sidebar").hidden = view !== "review";
+  document.querySelector(".page-heading").hidden = view === "review";
+  document.querySelector("#sidebar-title").textContent = view === "review" ? "Ôn tập" : "Thư viện";
   document.querySelectorAll(".nav-button").forEach(button => button.classList.toggle("active", button.dataset.view === view));
-  document.querySelector("#page-title").textContent = view === "review" ? "Góc ôn tập" : activeDomain || "Từ chuyên ngành";
-  document.querySelector("#page-subtitle").textContent = view === "review" ? "Ôn lại những từ đang học và từ mới thêm." : "Tra cứu thuật ngữ theo lĩnh vực và lưu lại từ cần học.";
-  if (view === "review") buildReviewQueue();
+  document.querySelector("#page-title").textContent = view === "review" ? "Góc ôn tập" : activeDomain || "Từ điển";
+  document.querySelector("#page-subtitle").textContent = view === "review" ? "Theo dõi bài test, nhận xét và tiến độ ghi nhớ của bạn." : "Tra cứu thuật ngữ theo chủ đề và lưu lại từ cần học.";
+  if (view === "review") {
+    activeReviewSection = "review-history";
+    buildReviewQueue();
+    renderReviewStats();
+    setReviewSection(activeReviewSection);
+  }
+}
+
+function addTopic(name) {
+  const cleanName = name.trim();
+  const exists = getDomainGroups().some(group => normalizeText(group.name) === normalizeText(cleanName));
+  if (exists) return false;
+  customDomains.push(cleanName);
+  saveCustomDomains();
+  activeDomain = cleanName;
+  activeCollection = "all";
+  setView("library");
+  render();
+  showToast(`Đã thêm chủ đề "${cleanName}".`);
+  return true;
+}
+
+function shuffle(items) {
+  return [...items].sort(() => Math.random() - .5);
+}
+
+function loadTestHistory() {
+  try {
+    const value = JSON.parse(localStorage.getItem(TEST_HISTORY_KEY) || "[]");
+    return Array.isArray(value) ? value : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveTestHistory(history) {
+  localStorage.setItem(TEST_HISTORY_KEY, JSON.stringify(history.slice(-12)));
+}
+
+function makeOptions(correct, distractors, multi = false) {
+  const unique = [...new Set([correct, ...distractors].filter(Boolean))].slice(0, 4);
+  return shuffle(unique).map(text => ({ text, correct: text === correct }));
+}
+
+function buildTestQuestions() {
+  const pool = terms.filter(term => term.term && (term.definition_en || term.meaning_vi));
+  if (!pool.length) return [];
+  const questions = [];
+  const pick = index => pool[index % pool.length];
+  for (let index = 0; index < Math.min(8, pool.length); index++) {
+    const term = pick(index);
+    questions.push({ type: "Meaning", prompt: `What does “${term.term}” mean?`, multi: false, termId: term.id,
+      options: makeOptions(term.definition_en || term.meaning_vi, pool.filter(item => item.id !== term.id).map(item => item.definition_en || item.meaning_vi)) });
+  }
+  const pronunciationPool = pool.filter(term => term.pronunciation);
+  for (let index = 0; index < Math.min(3, pronunciationPool.length); index++) {
+    const term = pronunciationPool[index];
+    questions.push({ type: "Pronunciation", prompt: `Which pronunciation best matches “${term.term}”?`, multi: false, termId: term.id,
+      options: makeOptions(term.pronunciation, pronunciationPool.filter(item => item.id !== term.id).map(item => item.pronunciation)) });
+  }
+  const contextPool = pool.filter(term => term.examples?.[0]?.en);
+  for (let index = 0; index < Math.min(2, contextPool.length); index++) {
+    const term = contextPool[index];
+    const correctOne = term.examples[0].en;
+    const correctTwo = `The team discussed the ${term.term} during the project meeting.`;
+    const options = shuffle([{ text: correctOne, correct: true }, { text: correctTwo, correct: true }, ...contextPool.filter(item => item.id !== term.id).slice(0, 2).map(item => ({ text: item.examples[0].en, correct: false }))]);
+    questions.push({ type: "Context", prompt: `Which TWO sentences use “${term.term}” correctly in context?`, multi: true, termId: term.id, options });
+  }
+  for (let index = 0; index < Math.min(2, contextPool.length); index++) {
+    const term = contextPool[(index + 2) % contextPool.length];
+    const wrong = `The ${term.term} is a type of coffee served in a restaurant.`;
+    const options = shuffle([{ text: wrong, correct: true }, { text: term.examples[0].en, correct: false }, { text: `The team reviewed the ${term.term} before the release.`, correct: false }, { text: `We documented the ${term.term} for the next project step.`, correct: false }]);
+    questions.push({ type: "Wrong use", prompt: `Which sentence uses “${term.term}” incorrectly?`, multi: false, termId: term.id, options });
+  }
+  return shuffle(questions).slice(0, 15);
+}
+
+function renderReviewStats() {
+  const history = loadTestHistory();
+  const historyContent = document.querySelector("#test-history-content");
+  const insightContent = document.querySelector("#test-insights-content");
+  if (!history.length) {
+    historyContent.innerHTML = `<p class="review-empty">Chưa có bài test nào. Điểm và ngày làm bài sẽ được lưu tại đây.</p>`;
+    insightContent.innerHTML = `<p>Bắt đầu làm bài test để app phân tích xu hướng sai và gợi ý mẹo nhớ phù hợp.</p><div class="insight-tags"><span>Phân tích xu hướng sai</span><span>Mẹo nhớ từ vựng</span></div>`;
+  } else {
+    historyContent.innerHTML = `<div class="history-list">${history.slice().reverse().map(item => `<div class="history-row"><strong>${item.score}/${item.total} · ${Math.round(item.score / item.total * 100)}%</strong><span>${new Date(item.date).toLocaleString("vi-VN")} · ${formatDuration(item.durationSeconds)}</span></div>`).join("")}</div>`;
+    const latest = history[history.length - 1];
+    const previous = history[history.length - 2];
+    const trend = previous ? (latest.score >= previous.score ? "Điểm đang có xu hướng tăng. Hãy tiếp tục ôn các từ trả lời sai." : "Điểm giảm nhẹ ở lần gần nhất. Hãy xem lại các câu sai và ôn theo ngữ cảnh.") : "Lần test đầu tiên đã được ghi nhận. App sẽ phân tích xu hướng sau các lần tiếp theo.";
+    insightContent.innerHTML = `<p>${trend}</p><div class="insight-tags"><span>${latest.wrongTypes?.join(", ") || "Ôn lại từ chưa chắc"}</span><span>Mẹo nhớ qua ngữ cảnh</span><span>Ôn lại bằng cách đặt câu</span></div>`;
+  }
+  const chart = document.querySelector("#score-chart");
+  const chartSummary = document.querySelector("#test-chart-summary");
+  chartSummary.innerHTML = history.length ? `<p>Đã hoàn thành <strong>${history.length}</strong> bài test · Điểm gần nhất: <strong>${history[history.length - 1].score}/${history[history.length - 1].total}</strong> · Thời gian: <strong>${formatDuration(history[history.length - 1].durationSeconds)}</strong></p>` : `<p class="review-empty">Chưa có dữ liệu điểm.</p>`;
+  chart.innerHTML = history.length ? history.slice(-6).map((item, index) => `<span style="height: ${Math.max(12, Math.round(item.score / item.total * 100))}%"><b>${Math.round(item.score / item.total * 100)}%</b><small>Lần ${history.length - Math.min(5, history.length - 1) + index}</small></span>`).join("") : `<p class="review-empty">Chưa có dữ liệu điểm.</p>`;
+}
+
+function formatDuration(seconds = 0) {
+  const totalSeconds = Math.max(0, Math.round(Number(seconds) || 0));
+  const minutes = Math.floor(totalSeconds / 60);
+  const remainingSeconds = totalSeconds % 60;
+  return minutes ? `${minutes} phút ${remainingSeconds} giây` : `${remainingSeconds} giây`;
+}
+
+function setReviewSection(section) {
+  activeReviewSection = section;
+  document.querySelectorAll(".review-panel").forEach(panel => { panel.hidden = panel.id !== section; });
+  const reviewView = document.querySelector("#review-view");
+  const dashboard = document.querySelector(".review-dashboard");
+  const quickReview = document.querySelector("#quick-review-section");
+  quickReview.hidden = section !== "review-test";
+  if (section === "review-test") reviewView.insertBefore(quickReview, dashboard);
+  else reviewView.appendChild(quickReview);
+  document.querySelectorAll(".review-side-link").forEach(item => item.classList.toggle("active", item.dataset.reviewSection === section));
+  if (section === "review-history" || section === "review-insights" || section === "review-chart") renderReviewStats();
+}
+
+function startTest() {
+  testQuestions = buildTestQuestions();
+  testIndex = 0;
+  testScore = 0;
+  testSelected = [];
+  testStartedAt = Date.now();
+  if (!testQuestions.length) { showToast("Thư viện chưa có đủ dữ liệu để tạo bài test."); return; }
+  document.querySelector("#test-question-view").hidden = false;
+  document.querySelector("#test-result").hidden = true;
+  renderTestQuestion();
+  document.querySelector("#test-dialog").showModal();
+}
+
+function renderTestQuestion() {
+  const question = testQuestions[testIndex];
+  document.querySelector("#test-progress").textContent = `Question ${testIndex + 1} / ${testQuestions.length}`;
+  document.querySelector("#test-type").textContent = question.type;
+  document.querySelector("#test-instruction").textContent = question.prompt;
+  document.querySelector("#test-error").textContent = "";
+  document.querySelector("#test-options").innerHTML = question.options.map((option, index) => `<label class="test-option"><input type="${question.multi ? "checkbox" : "radio"}" name="test-answer" value="${index}"><span>${escapeHtml(option.text)}</span></label>`).join("");
+  document.querySelector("#test-next").textContent = testIndex === testQuestions.length - 1 ? "Submit test" : "Next question";
+}
+
+function renderTestResult() {
+  const result = document.querySelector("#test-result");
+  result.innerHTML = `<div class="test-result-header"><p class="eyebrow"><span class="eyebrow-line"></span> TEST RESULT</p><h2>${testScore} / ${testQuestions.length} correct</h2><p>You can review every answer below.</p></div><div class="test-result-list">${testQuestions.map((question, questionIndex) => {
+    const selected = new Set(question._selected || []);
+    const answerRows = question.options.map((option, optionIndex) => {
+      const isSelected = selected.has(optionIndex);
+      const stateClass = option.correct ? "result-correct" : isSelected ? "result-wrong" : "";
+      const stateText = option.correct ? "Correct answer" : isSelected ? "Your answer" : "";
+      return `<div class="result-answer ${stateClass}"><span>${escapeHtml(option.text)}</span>${stateText ? `<small>${stateText}</small>` : ""}</div>`;
+    }).join("");
+    return `<article class="result-question ${question._answeredCorrectly ? "is-correct" : "is-wrong"}><div class="result-question-title"><strong>${questionIndex + 1}. ${escapeHtml(question.prompt)}</strong><span>${question._answeredCorrectly ? "Correct" : "Review"}</span></div><div class="result-answers">${answerRows}</div></article>`;
+  }).join("")}</div><div class="form-actions"><button class="primary-button" id="test-result-close" type="button">Back to review</button></div>`;
+  document.querySelector("#test-question-view").hidden = true;
+  result.hidden = false;
+  document.querySelector("#test-result-close").addEventListener("click", () => document.querySelector("#test-dialog").close());
+}
+
+function finishTest() {
+  const wrongTypes = testQuestions.filter((question, index) => !question._answeredCorrectly).map(question => question.type).filter((value, index, array) => array.indexOf(value) === index);
+  const history = loadTestHistory();
+  history.push({ date: new Date().toISOString(), score: testScore, total: testQuestions.length, durationSeconds: Math.max(1, Math.round((Date.now() - testStartedAt) / 1000)), wrongTypes });
+  saveTestHistory(history);
+  renderTestResult();
+  renderReviewStats();
+  showToast(`Bạn đạt ${testScore}/${testQuestions.length} câu đúng.`);
+}
+
+function submitTestAnswer() {
+  const question = testQuestions[testIndex];
+  const selected = [...document.querySelectorAll("#test-options input:checked")].map(input => Number(input.value)).sort();
+  if (!selected.length) { document.querySelector("#test-error").textContent = "Please choose an answer before continuing."; return; }
+  const correct = question.options.map((option, index) => option.correct ? index : null).filter(index => index !== null).sort();
+  question._selected = selected;
+  question._answeredCorrectly = selected.length === correct.length && selected.every((value, index) => value === correct[index]);
+  if (question._answeredCorrectly) testScore++;
+  if (testIndex === testQuestions.length - 1) finishTest();
+  else { testIndex++; renderTestQuestion(); }
 }
 
 function buildReviewQueue() {
@@ -508,10 +738,17 @@ function importRecords(records) {
   showToast(`Đã nhập ${added} từ${skipped ? `, bỏ qua ${skipped} mục trùng hoặc thiếu tên` : ""}.`);
 }
 
-document.querySelectorAll(".nav-button").forEach(button => button.addEventListener("click", () => setView(button.dataset.view)));
+document.querySelectorAll(".nav-button").forEach(button => button.addEventListener("click", () => {
+  if (button.dataset.view === "library") {
+    activeDomain = "";
+    activeCollection = "all";
+  }
+  setView(button.dataset.view);
+  render();
+}));
 document.querySelector(".sidebar").addEventListener("click", event => {
   const button = event.target.closest(".side-link");
-  if (!button) return;
+  if (!button || button.id === "add-topic-button") return;
   if (button.dataset.domain) {
     activeDomain = button.dataset.domain;
     activeCollection = "all";
@@ -522,6 +759,31 @@ document.querySelector(".sidebar").addEventListener("click", event => {
   setView("library");
   render();
 });
+document.querySelector("#add-topic-button").addEventListener("click", () => {
+  document.querySelector("#topic-form").reset();
+  document.querySelector("#topic-error").textContent = "";
+  document.querySelector("#topic-dialog").showModal();
+  document.querySelector("#topic-name").focus();
+});
+document.querySelector("#topic-form").addEventListener("submit", event => {
+  event.preventDefault();
+  const input = document.querySelector("#topic-name");
+  if (!addTopic(input.value)) {
+    document.querySelector("#topic-error").textContent = "Chủ đề này đã tồn tại trong thư viện.";
+    return;
+  }
+  document.querySelector("#topic-dialog").close();
+});
+document.querySelector("#review-sidebar").addEventListener("click", event => {
+  const button = event.target.closest("[data-review-section]");
+  if (!button) return;
+  setReviewSection(button.dataset.reviewSection);
+});
+document.querySelector("#start-test-button").addEventListener("click", () => {
+  startTest();
+});
+document.querySelector("#test-next").addEventListener("click", submitTestAnswer);
+document.querySelector("#test-cancel").addEventListener("click", () => document.querySelector("#test-dialog").close());
 elements.search.addEventListener("input", renderTerms);
 elements.sort.addEventListener("change", renderTerms);
 document.querySelector("#add-button").addEventListener("click", () => openForm());
