@@ -9,6 +9,9 @@
 | R3 | Import file bẩn/record trùng | 3 | 3 | Cao | validate + skip + toast | Dev |
 | R4 | Dashboard hiển thị số bịa | 2 | 4 | Cao | nguồn + công thức + editable telemetry | PM |
 | R5 | Scope creep sang backend/sync | 3 | 3 | Cao | hard-stop tại out-of-scope | PM |
+| R6 | Dashboard lệch PM Edit giữa artifact và GitHub log | 2 | 4 | Cao | chỉ hiển thị PM Edit tổng ở KPI/commit log; map commit ở detail | PM/Dev |
+| R7 | Telemetry dùng số mẫu thay vì số thực tế | 2 | 4 | Cao | thiếu nguồn thì hiển thị `—`; ghi log trước khi nhập | PM |
+| R8 | Dashboard không cập nhật kịp PM Edit sau khi commit đã được push lên GitHub, làm KPI và phân bổ theo artifact bị trễ hoặc chưa chính xác | 3 | 4 | Cao | gọi lại GitHub API khi reload; hiển thị thời điểm sync; có fallback local; không xem số cũ là số hiện tại; kiểm tra commit mới trước khi chốt báo cáo | PM/Dev |
 
 ## Delegation map (L0–L5)
 
@@ -23,6 +26,12 @@
 ## Fail-closed gates
 
 Không merge khi: file không mở được, test P0 fail, dữ liệu import làm mất dữ liệu cũ, hoặc telemetry không có nguồn/công thức.
+
+## Cập nhật hiện tại
+
+- PM Edit được đối soát theo commit hợp lệ, không lấy số nhập tay ở từng artifact.
+- Tổng vòng lặp 16 được tính từ telemetry artifact; Rework chưa tính khi chưa có log riêng.
+- R8 cần được kiểm tra trước mỗi lần chốt số liệu: commit đã push nhưng Dashboard chưa reload/sync thì KPI có thể chưa phản ánh PM Edit mới nhất.
 
 ## Telemetry
 

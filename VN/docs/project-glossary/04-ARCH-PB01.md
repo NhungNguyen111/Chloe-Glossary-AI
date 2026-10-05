@@ -37,6 +37,12 @@ Developer
 - `dialog` native cho detail/settings/form.
 - Dashboard dùng SVG/CSS/JS thuần; không cần chart library.
 
+## Cập nhật hiện tại
+
+- `app.js` seed thêm 15 term Automotive và migrate nghĩa tiếng Việt có dấu cho seed cũ.
+- Dashboard ưu tiên dữ liệu commit GitHub cho PM Edit; khi API không truy cập được, dùng fallback local đã kiểm chứng.
+- Telemetry không tự đặt giờ, rework hoặc AI adoption; thiếu dữ liệu thì hiển thị `—`.
+
 ## Rủi ro kiến trúc
 
 LocalStorage có giới hạn dung lượng và chỉ theo origin; nếu cần multi-device sẽ thay bằng API + database ở phase sau.

@@ -1,61 +1,57 @@
 # WBS-PB01 — Work Breakdown Structure & Rolling Wave
 
-**Phiên bản:** 1.1 · **Owner:** PM · **Trạng thái:** PM Reviewed
+**Phiên bản:** 1.2 · **Owner:** PM · **Trạng thái:** Done · **Ngày cập nhật:** 05/10/2026
 
 ## WBS cấp 1 — Chloe's Glossary AI
 
-Mỗi work package có đầu ra kiểm chứng được và chỉ chuyển trạng thái khi dependency trước đó đã hoàn tất.
+WBS hiện gồm 12 work package. Effort được lấy từ bảng estimate mới: **76 giờ = 0.475 Man-Month**, theo quy ước **160 giờ = 1 Man-Month**.
 
-### Wave 1 — Foundation
+| ID | Work Package | Deliverable | Hours | MM |
+|---|---|---|---:|---:|
+| 1 | Scope & Spec | SCOPE, SPEC và acceptance criteria | 5h | 0.031 |
+| 2 | Data Model & Architecture | MODULEMAP, ARCH và data contract | 5h | 0.031 |
+| 3 | Library / Asset Setup | Library UI, topic và 15 term Automotive | 4h | 0.025 |
+| 4 | CRUD Features | Add, edit, delete, detail và validation | 8h | 0.050 |
+| 5 | Dashboard & Analytics | Dashboard, KPI, GitHub edit log và analytics | 8h | 0.050 |
+| 6 | Import / Export | JSON/CSV, validation và persistence | 5h | 0.031 |
+| 7 | Review & Refactoring | Flashcard, test flow, result và UI refactor | 4h | 0.025 |
+| 8 | SIT / UAT | Scenario test, evidence và release gate | 6h | 0.038 |
+| 9 | PM / Documentation / Logs | PM review, Markdown artifacts và telemetry logs | 6h | 0.038 |
+| 10 | Git / Deploy / Environment Setup | GitHub sync, local server và environment setup | 8h | 0.050 |
+| 11 | Learning & Research Buffer | Research, clarification và learning time | 10h | 0.063 |
+| 12 | Rework Buffer | Dự phòng các vòng sửa lại đã được ghi nhận | 7h | 0.044 |
+| **TOTAL** |  |  | **76h** | **0.475 MM** |
 
-| ID | Work package | Deliverable | Dependency |
-|---|---|---|---|
-| 1.1 | Scope | Project Scope đã chốt | — |
-| 1.2 | Specification | User story, NFR, acceptance criteria | 1.1 |
-| 1.3 | Module Map | Module, backlog slice và boundary | 1.1, 1.2 |
-| 1.4 | Architecture | Static-first runtime và data contract | 1.2, 1.3 |
+## Rolling wave
 
-### Wave 2 — Product Build
-
-| ID | Work package | Deliverable | Dependency |
-|---|---|---|---|
-| 2.1 | Library | Search, filter, topic và term list | 1.4 |
-| 2.2 | Term CRUD | Add, edit, delete, detail và validation | 2.1 |
-| 2.3 | Review & Test | Flashcard, test question và test result | 2.2 |
-| 2.4 | Data I/O | Import/export JSON/CSV và persistence | 2.2 |
-| 2.5 | Preferences | Settings, theme và localStorage state | 2.1, 2.2 |
-
-### Wave 3 — Operate & Quality
-
-| ID | Work package | Deliverable | Dependency |
-|---|---|---|---|
-| 3.1 | Developer Dashboard | KPI, 10 artefacts, detail và PM edit sync | 1.1, 1.2, 2.1–2.5 |
-| 3.2 | Estimate & Risk | Estimate, trade-off và risk register | 1.3, 2.1–2.5 |
-| 3.3 | SIT/UAT Gate | Scenario test, evidence và release decision | 3.1, 3.2 |
-| 3.4 | Telemetry | Compression, rework, AI adoption và PM edits | 3.1, 3.3 |
+- **Wave 1 — Foundation:** package 1–3, chốt scope, architecture và thư viện.
+- **Wave 2 — Product Build:** package 4–7, hoàn thiện CRUD, dashboard, I/O và Ôn tập.
+- **Wave 3 — Quality & Delivery:** package 8–10, kiểm thử, tài liệu, Git và deploy.
+- **Buffer:** package 11–12, dùng cho learning và rework có evidence.
 
 ## Acceptance checklist
 
-- Mỗi package có output cụ thể và trace được về artefact tương ứng.
-- Package chỉ được đánh dấu Done khi dependency trước đó đã hoàn tất.
+- Mỗi package có output, Hours, MM và deliverable cụ thể.
 - Luồng tối thiểu chạy được: tìm term → xem detail → cập nhật trạng thái → refresh vẫn giữ dữ liệu.
 - Luồng test chạy được: mở Ôn tập → Bắt đầu Test → nộp bài → xem kết quả từng câu.
-- Release gate có SIT/UAT evidence và Dashboard phản ánh đúng trạng thái.
+- Dashboard hiển thị đúng 10 artifact, PM Edit theo commit và trạng thái Done.
+- SIT/UAT có evidence; Git/Deploy mở được đúng local project.
 
 ## Milestone
 
 | Mốc | Exit criteria |
 |---|---|
-| M1 Foundation Ready | 1.1–1.4 hoàn tất |
-| M2 MVP Usable | 2.1–2.5 chạy end-to-end |
-| M3 Release Ready | 3.1–3.4 có evidence, không còn P0/P1 chưa xử lý |
+| M1 Foundation Ready | Package 1–3 hoàn tất |
+| M2 MVP Usable | Package 4–7 chạy end-to-end |
+| M3 Release Ready | Package 8–10 có evidence và WBS được đánh dấu Done |
+| M4 Buffer Closed | Learning/Rework được ghi log, không còn P0/P1 |
 
 ## PM-edit log
 
 | # | File/section | Loại sửa | Lý do | Ảnh hưởng estimate |
 |---:|---|---|---|---:|
-| 1 | WBS toàn tài liệu | Structure | Tách work package theo wave, dependency và acceptance | +1.5h |
+| 1 | WBS toàn tài liệu | Structure + Estimate | Cập nhật từ 8/10 package sang 12 package và 76h/0.475 MM | +45.15h |
 
 ## Telemetry
 
-Tool: Codex · Thời gian người thật: 0.5h · Vòng lặp: 2 · Rework: 1 · PM-edit: 3.
+Tool: Codex · Thời gian người thật: 0.5h · Vòng lặp: 2 · Rework: 1 · PM-edit: 4 · Total WBS: 76h · Man-Month: 0.475.

@@ -9,12 +9,13 @@ Xây dựng một website chạy được ngay trong trình duyệt để ngư�
 ## 2. Người dùng và vấn đề
 
 - **Người dùng chính:** người học/người làm IT cần kho thuật ngữ cá nhân.
-- **Nỗi đau:** từ nằm rải rác trong ghi chú; khó nhớ nghĩa theo ngữ cảnh; không biết từ nào đang học.
+- **Vấn đề:** từ nằm rải rác trong ghi chú; khó nhớ nghĩa theo ngữ cảnh; không biết từ nào đang học.
 - **Kết quả mong đợi:** tìm được từ trong vài giây, mở chi tiết, đánh dấu trạng thái và ôn bằng flashcard.
 
 ## 3. In-scope MVP
 
 1. Thư viện từ vựng, tìm kiếm theo từ/nghĩa/thẻ.
+   - Bao gồm 15 thuật ngữ khởi tạo thuộc chủ đề Automotive.
 2. Lọc theo lĩnh vực, yêu thích, mới thêm, đang học, đã nắm vững.
 3. Thêm/sửa/xóa từ; xem chi tiết và ví dụ song ngữ.
 4. Quản lý chủ đề và sidebar thư viện; dữ liệu chủ đề cập nhật theo kho từ.
@@ -51,3 +52,10 @@ Tool: Codex + VS Code · Token(est): ước tính · Thời gian người thật
 | # | File/section | Loại sửa | Lý do | Ảnh hưởng estimate |
 |---:|---|---|---|---:|
 | 1 | In-scope MVP | Scope | Bổ sung chủ đề, khu vực Ôn tập và bài test | +1.0h |
+
+## Cập nhật hiện tại
+
+- Sidebar Ôn tập có 4 mục: Lịch sử học tập, Phân tích năng lực, Làm bài Test và Thống kê kết quả.
+- Hai khu vực Ôn tập nhanh và Bắt đầu Test được trình bày cùng cấp, cùng kiểu chữ và màu sắc.
+- Dashboard chỉ hiển thị PM Edit từ commit; không hiển thị PM Edit lặp lại trong từng artifact.
+- Telemetry chưa có log giờ thực tế, rework hoặc AI adoption nên các chỉ số đó hiển thị `—`.

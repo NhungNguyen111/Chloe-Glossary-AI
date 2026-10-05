@@ -25,6 +25,10 @@
 - **Integrity:** normalize record khi import; không cho lưu thiếu term/meaning.
 - **Consistency:** kho test phải lấy dữ liệu trực tiếp từ thư viện; term mới trong thư viện được đưa vào pool test sau khi reload.
 - **Traceability:** mỗi PM edit liên quan đến feature phải được gán về SCOPE/SPEC hoặc artefact phù hợp trên Dashboard và Markdown.
+- **Vocabulary seed:** thư viện có 15 thuật ngữ Automotive; mỗi term có phát âm, định nghĩa tiếng Anh, nghĩa tiếng Việt có dấu và ví dụ.
+- **UI consistency:** các nút cùng nhóm dùng cùng font, kích thước, màu xanh và trạng thái hover.
+- **Dashboard status editing:** trong `Check Detail`, PM có thể chuyển artifact giữa `TODO`, `Review` và `Done`; thay đổi cập nhật ngay KPI, tiến độ, bộ lọc và biểu đồ.
+- **Status persistence:** trạng thái artifact được lưu trên thiết bị bằng `localStorage` và được khôi phục sau khi reload; nút Reset phải xóa cả trạng thái này.
 
 ## 3. Trạng thái dữ liệu
 
@@ -44,3 +48,9 @@ Tool: Codex · Thời gian người thật: 0.7h · Vòng lặp: 2 · Rework: 1 
 |---:|---|---|---|---:|
 | 1 | User stories / Review | Feature | Tách Ôn tập thành các mục chức năng độc lập | +1.0h |
 | 2 | User stories / Test | Feature + UI | Bổ sung đề test nhiều dạng và kết quả chi tiết | +2.0h |
+
+## Cập nhật UI và dữ liệu
+
+- Từ điển giữ các nút Nhập dữ liệu, Xuất JSON và Thêm từ.
+- Ôn tập ẩn Nhập dữ liệu và Thêm từ; giữ Cài đặt và Xuất JSON với cùng kiểu màu xanh.
+- Bài test lấy term trực tiếp từ Thư viện; term Automotive mới được đưa vào pool sau khi reload.

@@ -22,9 +22,9 @@
     </nav>
     <div class="top-actions">
       <button class="quiet-button" id="settings-button" type="button">Cài đặt</button>
-      <button class="quiet-button" id="import-button" type="button">Nhập dữ liệu</button>
+      <button class="quiet-button" id="import-button" type="button" hidden>Nhập dữ liệu</button>
       <button class="quiet-button export-button" id="export-button" type="button">Xuất JSON</button>
-      <button class="primary-button" id="add-button" type="button"><span aria-hidden="true">＋</span> Thêm từ</button>
+      <button class="primary-button" id="add-button" type="button" hidden><span aria-hidden="true">＋</span> Thêm từ</button>
       <input id="file-input" type="file" accept=".json,.csv,application/json,text/csv" hidden>
     </div>
   </header>
@@ -62,7 +62,7 @@
           <h1 id="page-title">Từ điển</h1>
           <p class="page-subtitle" id="page-subtitle">Tra cứu thuật ngữ theo lĩnh vực và lưu lại từ cần học.</p>
         </div>
-        <div class="stats-strip" aria-label="Thống kê từ vựng">
+        <div class="stats-strip" aria-label="Thống kê từ vựng" hidden>
           <div class="stat"><strong id="stat-total">0</strong><span>từ đã lưu</span></div>
           <div class="stat stat-divider"><strong id="stat-learned">0</strong><span>đã nắm vững</span></div>
         </div>
@@ -97,7 +97,7 @@
         </div>
         <section class="quick-review-section" id="quick-review-section" hidden>
         <div class="review-heading">
-          <div><div class="eyebrow"><span class="eyebrow-line"></span> ÔN TẬP NHANH</div><h2>Ôn tập nhẹ nhàng</h2><p>Mỗi lần một từ. Thử nhớ nghĩa trước khi lật thẻ.</p></div>
+          <div><div class="eyebrow"><span class="eyebrow-line"></span> ÔN TẬP NHANH</div><h2>Ôn tập nhanh</h2><p>Mỗi lần một từ. Thử nhớ nghĩa trước khi lật thẻ.</p></div>
           <button class="quiet-button" id="shuffle-button" type="button">Trộn thẻ</button>
         </div>
         <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Lật thẻ từ vựng">

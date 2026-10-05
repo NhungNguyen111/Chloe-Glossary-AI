@@ -20,7 +20,7 @@
 
 1. Chưa có automated test runner; hiện dùng smoke test browser.
 2. Dữ liệu mặc định phụ thuộc app.js hiện có; cần export backup trước khi thử import lớn.
-3. GitHub API có thể không truy cập được từ localhost; Dashboard có fallback local commit gần nhất.
+3. GitHub API có thể không truy cập được từ localhost; Dashboard có fallback hai commit PM local gần nhất và đồng bộ lại khi API hoạt động.
 
 ## PM-edit log
 
@@ -28,6 +28,14 @@
 |---:|---|---|---|---:|
 | 1 | Decision log / Traceability | Process | Bổ sung quy tắc map commit vào artifact | +0.5h |
 | 2 | Known gaps | Telemetry | Ghi rõ fallback khi GitHub API không truy cập được | +0.25h |
+
+## Cập nhật hiện tại
+
+- Dashboard hiển thị tổng PM Edit ở KPI và GitHub Edit Log; không lặp số PM Edit trong từng artifact.
+- PM Edit được tính theo commit hợp lệ, loại trừ initial, merge và rename baseline.
+- Chỉnh trạng thái artifact là thao tác quản trị cục bộ, không làm thay đổi lịch sử GitHub; Dashboard lưu trạng thái bằng `localStorage` và cập nhật các chỉ số hiển thị ngay sau khi PM chọn status mới.
+- Tổng vòng lặp hiện tại là 16, lấy từ telemetry đã ghi trong 10 artifact Markdown.
+- Rework vẫn để trống cho đến khi có log riêng xác nhận vòng làm lại.
 
 ## Telemetry
 

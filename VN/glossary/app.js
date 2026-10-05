@@ -134,6 +134,32 @@ const additionalStarterTerms = [
   created_at: "2026-10-01T10:00:00.000Z", updated_at: "2026-10-01T10:00:00.000Z"
 }));
 
+const automotiveStarterTerms = [
+  ["Alternator", "/AWL-tuh-nay-ter/", "A device that converts engine power into electricity and charges the battery.", "Bộ phận biến cơ năng thành điện và sạc ắc quy.", "Automotive", "The alternator keeps the battery charged while the engine is running."],
+  ["Chassis", "/CHAS-ee/", "The main frame that supports a vehicle body, engine, and other components.", "Khung chính nâng đỡ thân xe, động cơ và các bộ phận khác.", "Automotive", "The new chassis is lighter but stronger than the previous design."],
+  ["Drivetrain", "/DRYV-trayn/", "The components that transfer engine power to the wheels.", "Hệ thống truyền công suất từ động cơ đến bánh xe.", "Automotive", "The electric drivetrain delivers power directly to the wheels."],
+  ["Torque", "/tork/", "The turning force produced by an engine or motor.", "Lực xoắn do động cơ hoặc mô-tơ tạo ra.", "Automotive", "This engine produces strong torque at low speed."],
+  ["Horsepower", "/HORS-pow-er/", "A unit used to measure engine power.", "Đơn vị dùng để đo công suất động cơ.", "Automotive", "The larger engine provides more horsepower for highway driving."],
+  ["Suspension", "/suh-SPEN-shun/", "The system of springs and dampers that supports a vehicle and absorbs road movement.", "Hệ thống lò xo và giảm chấn nâng đỡ xe, đồng thời hấp thụ rung động từ mặt đường.", "Automotive", "The upgraded suspension improves comfort on rough roads."],
+  ["Brake pad", "/brayk pad/", "A friction component that presses against a brake disc to slow or stop a vehicle.", "Bộ phận ma sát ép vào đĩa phanh để giảm tốc hoặc dừng xe.", "Automotive", "The mechanic replaced the worn brake pads."],
+  ["Transmission", "/trans-MISH-un/", "The system that transfers engine power and controls speed and torque.", "Hệ thống truyền lực và điều khiển tốc độ cùng lực xoắn.", "Automotive", "The automatic transmission changes gears smoothly."],
+  ["Airbag", "/AIR-bag/", "A safety cushion that inflates during a collision to protect occupants.", "Túi khí an toàn phồng lên khi va chạm để bảo vệ người ngồi trong xe.", "Automotive", "The airbag deployed during the crash and reduced the impact."],
+  ["Spark plug", "/spark plug/", "A component that creates the spark needed to ignite fuel in a gasoline engine.", "Bộ phận tạo tia lửa để đốt nhiên liệu trong động cơ xăng.", "Automotive", "A faulty spark plug can cause the engine to misfire."],
+  ["Fuel injector", "/FYOO-el in-JEK-ter/", "A component that sprays a precise amount of fuel into an engine.", "Bộ phận phun một lượng nhiên liệu chính xác vào động cơ.", "Automotive", "The fuel injector must be clean for efficient combustion."],
+  ["Radiator", "/RAY-dee-ay-ter/", "A component that removes heat from engine coolant.", "Bộ phận giải nhiệt nước làm mát của động cơ.", "Automotive", "The radiator prevents the engine from overheating."],
+  ["Cruise control", "/krooz kun-TROHL/", "A system that maintains a selected vehicle speed automatically.", "Hệ thống tự động duy trì tốc độ xe đã chọn.", "Automotive", "Use cruise control on a clear and steady highway."],
+  ["Blind spot", "/blynd spot/", "An area around a vehicle that the driver cannot see directly or in the mirrors.", "Vùng xung quanh xe mà tài xế không nhìn thấy trực tiếp hoặc qua gương.", "Automotive", "Check the blind spot before changing lanes."],
+  ["Lane departure warning", "/layn dee-PAR-cher WOR-ning/", "A safety feature that alerts the driver when the vehicle leaves its lane unintentionally.", "Tính năng cảnh báo khi xe rời làn đường ngoài ý muốn.", "Automotive", "The lane departure warning alerted the driver near the road edge."]
+].map(([term, pronunciation, definition_en, meaning_vi, domain, example]) => ({
+  id: `seed-auto-${term.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-")}`, term, full_form: "", pronunciation,
+  meaning_vi, definition_en, part_of_speech: "noun", domains: [domain], roles: [], difficulty: "Intermediate",
+  context: example, examples: [{ en: example, vi: meaning_vi }], related_terms: [], common_mistakes: "",
+  tags: [domain.toLowerCase()], source: "Starter library", status: "new", favorite: false,
+  created_at: "2026-10-06T10:00:00.000Z", updated_at: "2026-10-06T10:00:00.000Z"
+}));
+
+const starterLibraryTerms = [...additionalStarterTerms, ...automotiveStarterTerms];
+
 const elements = {
   termList: document.querySelector("#term-list"), search: document.querySelector("#search-input"),
   domainLinks: document.querySelector("#domain-links"), sort: document.querySelector("#sort-select"),
@@ -197,20 +223,20 @@ function applyTheme(theme) {
 function loadTerms() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) return structuredClone([...starterTerms, ...additionalStarterTerms]);
+    if (!stored) return structuredClone([...starterTerms, ...starterLibraryTerms]);
     const parsed = JSON.parse(stored);
-    if (!Array.isArray(parsed)) return structuredClone([...starterTerms, ...additionalStarterTerms]);
+    if (!Array.isArray(parsed)) return structuredClone([...starterTerms, ...starterLibraryTerms]);
     const existingIds = new Set(parsed.map(term => term.id));
-    const missingSeeds = additionalStarterTerms.filter(term => !existingIds.has(term.id));
+    const missingSeeds = starterLibraryTerms.filter(term => !existingIds.has(term.id));
     return [...parsed.map(migrateStarterCopy), ...structuredClone(missingSeeds)];
   } catch (error) {
-    return structuredClone([...starterTerms, ...additionalStarterTerms]);
+    return structuredClone([...starterTerms, ...starterLibraryTerms]);
   }
 }
 
 function migrateStarterCopy(record) {
   const term = normalizeTerm(record);
-  const starter = starterTerms.find(item => item.id === term.id);
+  const starter = starterTerms.find(item => item.id === term.id) || starterLibraryTerms.find(item => item.id === term.id);
   if (!starter) return term;
   for (const field of ["meaning_vi", "context", "common_mistakes"]) {
     if (normalizeText(term[field]) === normalizeText(starter[field])) term[field] = starter[field];
@@ -460,6 +486,7 @@ function onSubmitTerm(event) {
 
 function setView(view) {
   currentView = view;
+  document.body.classList.toggle("review-mode", view === "review");
   elements.library.hidden = view !== "library";
   elements.review.hidden = view !== "review";
   document.querySelector("#library-sidebar").hidden = view !== "library";

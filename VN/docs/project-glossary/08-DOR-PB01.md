@@ -22,6 +22,14 @@ Một task chỉ được đưa vào build khi có đủ:
 - [ ] Không chứa yêu cầu ngoài scope.
 - [ ] Có cách verify bằng tay hoặc test case.
 
+## Cập nhật acceptance hiện tại
+
+- [ ] Nếu thêm term seed, có domain, phát âm, định nghĩa tiếng Anh, nghĩa tiếng Việt có dấu và ví dụ.
+- [ ] Nếu thay đổi Ôn tập, có test cho sidebar, flashcard, bài test và kết quả từng câu.
+- [ ] Nếu thay đổi telemetry, có nguồn dữ liệu và công thức; không dùng số mẫu không có evidence.
+- [ ] Nếu thay đổi PM Edit, artifact Markdown và Dashboard cùng phản ánh commit tương ứng.
+- [ ] `Check Detail` cho phép chuyển artifact giữa `TODO`, `Review` và `Done`; reload vẫn giữ trạng thái và Reset xóa được trạng thái đã lưu.
+
 ## Telemetry
 
 Tool: Codex · Thời gian người thật: 0.3h · Vòng lặp: 1 · Rework: 0 · PM-edit: 1.

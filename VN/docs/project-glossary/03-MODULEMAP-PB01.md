@@ -10,7 +10,7 @@
 | M4 Review | flashcard, queue, mastered | M2, M3 |
 | M5 Data I/O | import JSON/CSV, export JSON/CSV | M3 |
 | M6 Preferences | theme, settings | M1, localStorage |
-| M7 Developer dashboard | status, metrics, telemetry | artefact markdown |
+| M7 Developer dashboard | Check Detail, chỉnh status, metrics, telemetry | artefact markdown, localStorage |
 
 ## Backlog slice MVP
 
@@ -27,6 +27,12 @@
 - `updated_at` dùng cho sort “Mới cập nhật”.
 - Import không overwrite dữ liệu cũ trong MVP; trùng term sẽ skip.
 - Dashboard là công cụ nội bộ, không đưa vào navigation người dùng.
+- PM có thể chỉnh trạng thái từng artifact trong `Check Detail`; thay đổi được lưu local và phản ánh lại danh sách, progress, filter và chart.
+
+## Cập nhật hiện tại
+
+- M4 Review mở rộng từ flashcard sang lịch sử học tập, phân tích năng lực, bài test và thống kê kết quả.
+- M2 Library quản lý thêm 15 term Automotive và đồng bộ pool term cho M4.
 
 ## Telemetry
 
