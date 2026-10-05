@@ -1,0 +1,42 @@
+﻿{
+    "05-WBS-PB01.md":  {
+                           "Hash":  "FCEFC678B4928DFD090438C226CCC5C7316A3C6FEC8C30219040F84E55F7095F",
+                           "LastWriteUtc":  "2026-10-05T06:06:23.9103095Z"
+                       },
+    "06-EST-PB01.md":  {
+                           "Hash":  "6A550DF944343C4C73FCFD7DB30690003E9A17A6CE9B02D85C266D28A995D931",
+                           "LastWriteUtc":  "2026-10-05T06:32:40.0160357Z"
+                       },
+    "08-DOR-PB01.md":  {
+                           "Hash":  "30CB5C6120FCABA16DF0A793B0EFB256636E69A02809F555BAD2B310B7E84994",
+                           "LastWriteUtc":  "2026-10-05T06:06:25.8180533Z"
+                       },
+    "03-MODULEMAP-PB01.md":  {
+                                 "Hash":  "021BB5E3D7E9DE78E655565DB13E4BC1BC0224A4D7DD6DE2EC3F6F11818C725D",
+                                 "LastWriteUtc":  "2026-10-05T06:06:22.6938710Z"
+                             },
+    "09-DEVBOOK-PB01.md":  {
+                               "Hash":  "874913B0991368AC2F988820BD8612D57C6156B3B7E445D04C6516CE3827C97A",
+                               "LastWriteUtc":  "2026-10-05T06:06:26.3486742Z"
+                           },
+    "04-ARCH-PB01.md":  {
+                            "Hash":  "087885B796EB6ED6479B6AC7B7E1553331D60105E2855BA562938A980CA8A121",
+                            "LastWriteUtc":  "2026-10-05T06:06:23.3651577Z"
+                        },
+    "02-SPEC-PB01.md":  {
+                            "Hash":  "F39E9C98D577AE26C61D7D3CCAC950EA5F0455BF90AA409B79F02815BE17BB8D",
+                            "LastWriteUtc":  "2026-10-05T06:06:22.2092436Z"
+                        },
+    "01-SCOPE-PB01.md":  {
+                             "Hash":  "7E9B7B6E86350AC3DB2F34475CB00F200CBD6500E1E03C8E0A9EE67A3A1F37CE",
+                             "LastWriteUtc":  "2026-10-05T06:06:21.6624632Z"
+                         },
+    "07-RISK-DELEGATION-PB01.md":  {
+                                       "Hash":  "69736A531DBB647D9A4DF8D44E9075B1E674F2226971FF037F309709711A3A6A",
+                                       "LastWriteUtc":  "2026-10-05T06:06:25.1515387Z"
+                                   },
+    "10-RTM-SIT-UAT-TELEMETRY-PB01.md":  {
+                                             "Hash":  "0F53B527697A427621FCDA12B73A65CC50F3114EF78D3E148B36EE53DC5D5C01",
+                                             "LastWriteUtc":  "2026-10-05T06:06:26.8205551Z"
+                                         }
+}

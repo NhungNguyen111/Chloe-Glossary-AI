@@ -1,0 +1,33 @@
+# SPEC-PB01 — Đặc tả chức năng và NFR
+
+## 1. User stories
+
+| ID | User story | Acceptance criteria |
+|---|---|---|
+| US-01 | Là người học, tôi muốn tìm thuật ngữ | Nhập từ/nghĩa/thẻ; danh sách cập nhật không reload |
+| US-02 | Tôi muốn lọc theo tiến độ | Sidebar hiển thị đúng all/favorites/new/learning/mastered |
+| US-03 | Tôi muốn xem chi tiết | Click một dòng mở dialog có nghĩa, ví dụ, context, trạng thái |
+| US-04 | Tôi muốn thêm từ | Form bắt buộc term + meaning; lưu được sau refresh |
+| US-05 | Tôi muốn ôn tập | Flashcard lật được, chuyển thẻ, đánh dấu mastered |
+| US-06 | Tôi muốn mang dữ liệu đi | Export JSON/CSV tạo file tải xuống hợp lệ |
+| US-07 | Tôi muốn nạp dữ liệu có sẵn | Import JSON/CSV; từ trùng bị bỏ qua và có thông báo |
+
+## 2. NFR
+
+- **Usability:** keyboard focus rõ; `/` focus ô tìm kiếm; dialog có nút đóng.
+- **Performance:** không framework runtime; render danh sách theo dữ liệu hiện có; không request API.
+- **Privacy:** dữ liệu chỉ ở trình duyệt hiện tại; không gửi dữ liệu lên server.
+- **Compatibility:** Chrome/Edge/Safari phiên bản hiện đại; responsive từ 320px.
+- **Integrity:** normalize record khi import; không cho lưu thiếu term/meaning.
+
+## 3. Trạng thái dữ liệu
+
+`new` → `learning` → `mastered`; người dùng có thể đổi trạng thái trực tiếp trong chi tiết. `favorite` là cờ độc lập.
+
+## 4. Quy tắc lỗi
+
+Import sai định dạng phải hiện toast; record thiếu `term` bị bỏ qua; JSON không phải array phải dừng import; thao tác xóa phải có confirm.
+
+## Telemetry
+
+Tool: Codex · Thời gian người thật: 0.7h · Vòng lặp: 2 · Rework: 1 · PM-edit: 2.

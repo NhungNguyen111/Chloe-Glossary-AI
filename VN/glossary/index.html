@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e8f3ff">
+  <title>Từ điển IT cá nhân</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Trang chủ từ điển">
+      <span>Chloe's Library</span>
+    </a>
+    <nav class="top-nav" aria-label="Điều hướng chính">
+      <button class="nav-button active" data-view="library" type="button">Từ điển</button>
+      <button class="nav-button" data-view="review" type="button">Ôn tập <span class="nav-count" id="review-count">0</span></button>
+    </nav>
+    <div class="top-actions">
+      <button class="quiet-button" id="settings-button" type="button">Cài đặt</button>
+      <button class="quiet-button" id="import-button" type="button">Nhập dữ liệu</button>
+      <button class="quiet-button export-button" id="export-button" type="button">Xuất JSON</button>
+      <button class="primary-button" id="add-button" type="button"><span aria-hidden="true">＋</span> Thêm từ</button>
+      <input id="file-input" type="file" accept=".json,.csv,application/json,text/csv" hidden>
+    </div>
+  </header>
+
+  <main class="app-shell" id="top">
+    <aside class="sidebar" aria-label="Thư viện từ vựng">
+      <div class="sidebar-label">Thư viện</div>
+      <button class="side-link active" data-collection="all" type="button" aria-pressed="true"><span class="side-icon blue-icon">A</span><span>Từ chuyên ngành</span><span class="side-count" id="count-all">0</span></button>
+      <div class="domain-links" id="domain-links" aria-label="Lĩnh vực chuyên ngành"></div>
+
+      <div class="sidebar-rule"></div>
+      <div class="sidebar-label filter-label">Tiến độ học</div>
+      <button class="side-link" data-collection="favorites" type="button" aria-pressed="false"><span class="side-icon blue-icon">&#9825;</span><span>Yêu thích</span><span class="side-count" id="count-favorites">0</span></button>
+      <button class="side-link" data-collection="new" type="button" aria-pressed="false"><span class="side-icon blue-icon">01</span><span>Mới thêm</span><span class="side-count" id="count-new">0</span></button>
+      <button class="side-link" data-collection="learning" type="button" aria-pressed="false"><span class="side-icon blue-icon">02</span><span>Đang học</span><span class="side-count" id="count-learning">0</span></button>
+      <button class="side-link" data-collection="mastered" type="button" aria-pressed="false"><span class="side-icon blue-icon">03</span><span>Đã nắm vững</span><span class="side-count" id="count-mastered">0</span></button>
+      <div class="sidebar-note">
+        <span class="note-dot" aria-hidden="true"></span>
+        <span>Kho từ vựng của riêng bạn</span>
+      </div>
+      <div class="storage-note">Dữ liệu đang lưu trên thiết bị này.</div>
+    </aside>
+
+    <section class="content-area" aria-label="Nội dung từ điển">
+      <div class="page-heading">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-line"></span> ENGLISH FOR TECHNOLOGY</div>
+          <h1 id="page-title">Từ chuyên ngành</h1>
+          <p class="page-subtitle" id="page-subtitle">Tra cứu thuật ngữ theo lĩnh vực và lưu lại từ cần học.</p>
+        </div>
+        <div class="stats-strip" aria-label="Thống kê từ vựng">
+          <div class="stat"><strong id="stat-total">0</strong><span>từ đã lưu</span></div>
+          <div class="stat stat-divider"><strong id="stat-learned">0</strong><span>đã nắm vững</span></div>
+        </div>
+      </div>
+
+      <section class="library-view" id="library-view">
+        <div class="toolbar">
+          <label class="search-box">
+            <span class="search-symbol" aria-hidden="true"></span>
+            <span class="visually-hidden">Tìm từ vựng</span>
+            <input id="search-input" type="search" placeholder="Tìm từ, nghĩa hoặc thẻ..." autocomplete="off">
+            <kbd>/</kbd>
+          </label>
+          <label class="sort-control"><span>Sắp xếp</span>
+            <select id="sort-select">
+              <option value="updated">Mới cập nhật</option>
+              <option value="az">Tên A-Z</option>
+              <option value="difficulty">Độ khó</option>
+            </select>
+          </label>
+        </div>
+        <div class="results-meta"><span id="results-count">0 từ</span><span class="meta-rule"></span><span id="active-filter-label">Tất cả từ</span></div>
+        <div class="term-list" id="term-list" aria-live="polite"></div>
+      </section>
+
+      <section class="review-view" id="review-view" hidden>
+        <div class="review-heading">
+          <div><div class="eyebrow"><span class="eyebrow-line"></span> ÔN TẬP NHANH</div><h2>Ôn tập nhẹ nhàng</h2><p>Mỗi lần một từ. Thử nhớ nghĩa trước khi lật thẻ.</p></div>
+          <button class="quiet-button" id="shuffle-button" type="button">Trộn thẻ</button>
+        </div>
+        <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Lật thẻ từ vựng">
+          <div class="flashcard-top"><span id="flashcard-domain">IT</span><span id="flashcard-position">1 / 1</span></div>
+          <div class="flashcard-face">
+            <span class="flashcard-label" id="flashcard-label">TỪ</span>
+            <h3 id="flashcard-term">Chọn từ để ôn</h3>
+            <div class="flashcard-answer" id="flashcard-answer" hidden></div>
+          </div>
+          <div class="flashcard-bottom"><span id="flashcard-hint">Chạm để xem nghĩa</span><span class="flip-mark" aria-hidden="true">↗</span></div>
+        </div>
+        <div class="review-controls">
+          <button class="round-button" id="previous-card" type="button" aria-label="Thẻ trước">←</button>
+          <button class="quiet-button" id="reveal-card" type="button">Hiện nghĩa</button>
+          <button class="round-button next-button" id="next-card" type="button" aria-label="Thẻ tiếp theo">→</button>
+          <button class="learned-button" id="mark-mastered" type="button">Đã nhớ từ này</button>
+        </div>
+      </section>
+      <footer class="page-footer"><span class="footer-stamp">G</span><span>Cá nhân, gọn gàng, luôn sẵn sàng tra cứu.</span><span class="footer-count" id="footer-count">0 TỪ</span></footer>
+    </section>
+  </main>
+
+  <dialog class="detail-dialog" id="detail-dialog" aria-labelledby="detail-term">
+    <div class="dialog-topline"><span class="dialog-kicker">GHI CHÚ TỪ VỰNG</span><button class="icon-button" data-close="detail-dialog" type="button" aria-label="Đóng">×</button></div>
+    <div id="detail-content"></div>
+  </dialog>
+
+  <dialog class="settings-dialog" id="settings-dialog" aria-labelledby="settings-title">
+    <div class="dialog-topline"><span class="dialog-kicker">TÙY CHỈNH GIAO DIỆN</span><button class="icon-button" data-close="settings-dialog" type="button" aria-label="Đóng">×</button></div>
+    <div class="settings-body">
+      <h2 id="settings-title">Cài đặt</h2>
+      <p class="form-intro">Chọn bảng màu bạn muốn sử dụng.</p>
+      <fieldset class="theme-picker">
+        <legend>Chủ đề màu</legend>
+        <label class="theme-option">
+          <input type="radio" name="theme" value="default">
+          <span class="theme-swatch theme-swatch-default" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="theme-option-copy"><strong>Trắng</strong><small>Mặc định, sáng và tối giản</small></span>
+          <span class="theme-check" aria-hidden="true">✓</span>
+        </label>
+        <label class="theme-option">
+          <input type="radio" name="theme" value="soft-pink">
+          <span class="theme-swatch theme-swatch-pink" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="theme-option-copy"><strong>Hồng kem</strong><small>Soft Pink · Cream</small></span>
+          <span class="theme-check" aria-hidden="true">✓</span>
+        </label>
+        <label class="theme-option">
+          <input type="radio" name="theme" value="baby-blue">
+          <span class="theme-swatch theme-swatch-blue" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="theme-option-copy"><strong>Xanh baby + lavender</strong><small>Baby Blue · Lavender</small></span>
+          <span class="theme-check" aria-hidden="true">✓</span>
+        </label>
+      </fieldset>
+    </div>
+  </dialog>
+
+  <dialog class="form-dialog" id="term-dialog" aria-labelledby="form-title">
+    <form id="term-form" method="dialog">
+      <div class="dialog-topline"><span class="dialog-kicker">KHO TỪ VỰNG CỦA BẠN</span><button class="icon-button" data-close="term-dialog" type="button" aria-label="Đóng">×</button></div>
+      <h2 id="form-title">Thêm từ mới</h2>
+      <p class="form-intro">Ghi lại điều bạn muốn nhớ. Có thể bỏ trống mục chưa có.</p>
+      <input type="hidden" id="term-id">
+      <div class="form-grid">
+        <label class="field span-2"><span>Từ hoặc cụm từ tiếng Anh <b>*</b></span><input id="field-term" required maxlength="120" placeholder="Ví dụ: idempotency"></label>
+        <label class="field"><span>Dạng đầy đủ</span><input id="field-full-form" maxlength="160" placeholder="Nếu là từ viết tắt"></label>
+        <label class="field"><span>Phiên âm hoặc cách đọc</span><input id="field-pronunciation" maxlength="100" placeholder="/ˌaɪ.dəmˈpoʊ.tən.si/"></label>
+        <label class="field span-2"><span>Nghĩa tiếng Việt <b>*</b></span><textarea id="field-meaning" required rows="2" maxlength="500" placeholder="Giải thích ngắn gọn, đúng ngữ cảnh"></textarea></label>
+        <label class="field span-2"><span>Định nghĩa tiếng Anh đơn giản</span><textarea id="field-definition" rows="2" maxlength="500" placeholder="A short explanation in plain English"></textarea></label>
+        <label class="field"><span>Lĩnh vực chuyên ngành</span><input id="field-domains" maxlength="180" placeholder="Automotive, Web, AI, Presale, Sale"></label>
+        <label class="field"><span>Vai trò</span><input id="field-roles" maxlength="180" placeholder="Backend Developer, BA"></label>
+        <label class="field"><span>Độ khó</span><select id="field-difficulty"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></label>
+        <label class="field"><span>Trạng thái học</span><select id="field-status"><option value="new">Mới thêm</option><option value="learning">Đang học</option><option value="mastered">Đã nắm vững</option></select></label>
+        <label class="field span-2"><span>Ngữ cảnh sử dụng</span><textarea id="field-context" rows="2" maxlength="500" placeholder="Thường gặp khi nào?"></textarea></label>
+        <label class="field span-2"><span>Ví dụ tiếng Anh</span><textarea id="field-example-en" rows="2" maxlength="400" placeholder="The payment API must support idempotency."></textarea></label>
+        <label class="field span-2"><span>Dịch ví dụ</span><textarea id="field-example-vi" rows="2" maxlength="400" placeholder="API thanh toán cần hỗ trợ tính idempotency."></textarea></label>
+        <label class="field span-2"><span>Dễ nhầm hoặc lưu ý</span><textarea id="field-mistakes" rows="2" maxlength="400" placeholder="Cách dùng sai hoặc điểm cần phân biệt"></textarea></label>
+        <label class="field span-2"><span>Thẻ từ khóa <small>phân cách bằng dấu phẩy</small></span><input id="field-tags" maxlength="200" placeholder="api, backend, distributed-systems"></label>
+      </div>
+      <p class="form-error" id="form-error" role="alert"></p>
+      <div class="form-actions"><button class="quiet-button" data-close="term-dialog" type="button">Hủy</button><button class="primary-button" type="submit">Lưu từ</button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
