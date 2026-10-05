@@ -1,2 +1,2 @@
-# Chloe-Library
-Chloe Library
+# Chloe-Glossary AI
+Chloe Glossary AI
