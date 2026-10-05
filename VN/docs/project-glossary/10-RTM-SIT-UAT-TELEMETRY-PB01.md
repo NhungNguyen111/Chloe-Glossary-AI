@@ -10,6 +10,8 @@
 | US-05 | M4 Review | SPEC, WBS | SIT-05 |
 | US-06/07 | M5 I/O | SPEC, RISK | SIT-06/07 |
 | US-08 | M7 Dashboard | SCOPE, EST | SIT-08 |
+| US-09/10 | M4 Review & Test | SPEC, WBS | SIT-09/10 |
+| US-11 | M7 Dashboard | SPEC, EST | SIT-11 |
 
 ## 2. SIT / UAT records
 
@@ -23,6 +25,9 @@
 | SIT-06 | Export JSON/CSV | file tải hợp lệ | PASS |
 | SIT-07 | Import record trùng | skip, không overwrite | PASS |
 | SIT-08 | Mở dashboard, đổi filter | KPI/chart cập nhật | PASS |
+| SIT-09 | Mở Ôn tập và bắt đầu Test | đề 10–15 câu lấy từ kho Thư viện | PASS |
+| SIT-10 | Nộp bài test | đúng/tổng và đáp án từng câu hiển thị, sai đỏ/đúng xanh | PASS |
+| SIT-11 | Xem lịch sử, phân tích và thống kê | ngày giờ, thời lượng, xu hướng sai và biểu đồ điểm được lưu | PASS |
 
 **UAT gate:** người dùng có thể hoàn thành flow “tìm → hiểu → đánh dấu → ôn” mà không cần hướng dẫn trực tiếp. Kết quả baseline: PASS có điều kiện, cần tiếp tục theo dõi accessibility và backup.
 
@@ -48,4 +53,12 @@
 
 ## Telemetry
 
-Tool: Codex · Thời gian người thật: 0.8h · Vòng lặp: 2 · Rework: 1 · PM-edit: 3.
+## PM-edit log
+
+| # | File/section | Loại sửa | Lý do | Ảnh hưởng estimate |
+|---:|---|---|---|---:|
+| 1 | Requirements Traceability / SIT-UAT | Traceability | Bổ sung test, kết quả và thống kê học tập | +1.0h |
+
+## Telemetry
+
+Tool: Codex · Thời gian người thật: 0.8h · Vòng lặp: 2 · Rework: 1 · PM-edit: 4.

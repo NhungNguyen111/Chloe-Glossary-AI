@@ -40,6 +40,26 @@ Không estimate backend, login, đồng bộ cloud, audio pronunciation hoặc G
 | Contingency 15% cho encoding, dữ liệu bẩn, browser khác nhau | 4.02 |
 | **Budget nên dùng để lập kế hoạch** | **30.85 giờ ≈ 31 giờ** |
 
+### Man-Month conversion
+
+Quy ước: **1 Man-Month = 160 giờ làm việc**. Công thức: `Man-Month = Time ÷ 160`.
+
+| Work package | Time | Man-Month |
+|---|---:|---:|
+| Scope/spec | 3.08h | 0.019 MM |
+| Data/architecture | 2.58h | 0.016 MM |
+| Library | 4.08h | 0.026 MM |
+| CRUD | 3.50h | 0.022 MM |
+| Review | 2.58h | 0.016 MM |
+| Import/export | 2.67h | 0.017 MM |
+| Dashboard | 3.17h | 0.020 MM |
+| SIT/UAT | 3.17h | 0.020 MM |
+| PM review/log | 2.00h | 0.013 MM |
+| **PERT base** | **26.83h** | **0.168 MM** |
+| **Planning budget (+15%)** | **30.85h** | **0.193 MM** |
+
+Tổng hiện tại tương đương khoảng **3.4 ngày công**, vì vậy đây là estimate cho MVP/scope tinh gọn, chưa phải effort cho một hệ thống production đầy đủ.
+
 Với lịch 2 giờ/ngày, budget tương đương khoảng **16 phiên làm việc**. Mốc nên dùng:
 
 | Wave | Nội dung | Budget |
@@ -80,6 +100,7 @@ PM-edit #N · YYYY-MM-DD HH:mm
 | # | Thời điểm | File/section | Loại sửa | Lý do | Ảnh hưởng |
 |---:|---|---|---|---|---:|
 | 0 | 05/10/2026 | `06-EST-PB01.md` baseline | — | AI tạo bản baseline; PM chưa sửa | 0h |
+| 1 | 05/10/2026 | Estimate 3-point / Man-Month conversion | Structure + số liệu | Bổ sung Man-Month, tổng budget và quy ước 160h/MM | +0.5h |
 
 **Quy ước từ đây:** khi Codex chỉnh artefact theo yêu cầu của PM, Codex phải tăng số `PM-edit`, ghi file/section, lý do và ảnh hưởng estimate trong cùng lượt chỉnh sửa. Không ghi PM-edit = artefact chưa hoàn tất.
 
@@ -97,4 +118,4 @@ Không điền “giờ thật” hoặc “nén năng suất” cho đến khi 
 
 ## Telemetry
 
-Tool: Codex · Token(est): chưa đo tự động · Thời gian người thật: 0.5h · Vòng lặp: 1 · Rework: 1 · PM-edit: 0 · Estimate base: 26.83h · Planning budget: 31h.
+Tool: Codex · Token(est): chưa đo tự động · Thời gian người thật: 0.5h · Vòng lặp: 1 · Rework: 1 · PM-edit: 1 · Estimate base: 26.83h · Planning budget: 31h · Man-Month base: 0.168 · Planning Man-Month: 0.193.

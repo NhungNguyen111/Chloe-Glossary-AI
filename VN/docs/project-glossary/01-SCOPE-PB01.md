@@ -1,6 +1,6 @@
 # SCOPE-PB01 — Từ điển IT cá nhân
 
-**Phiên bản:** 1.0 · **Chủ sở hữu:** PM/Developer · **Trạng thái:** Baseline
+**Phiên bản:** 1.1 · **Chủ sở hữu:** PM/Developer · **Trạng thái:** PM Reviewed
 
 ## 1. Mục tiêu
 
@@ -17,10 +17,12 @@ Xây dựng một website chạy được ngay trong trình duyệt để ngư�
 1. Thư viện từ vựng, tìm kiếm theo từ/nghĩa/thẻ.
 2. Lọc theo lĩnh vực, yêu thích, mới thêm, đang học, đã nắm vững.
 3. Thêm/sửa/xóa từ; xem chi tiết và ví dụ song ngữ.
-4. Flashcard ôn tập, trộn thẻ, đánh dấu đã nhớ.
-5. Import JSON/CSV và export JSON/CSV.
-6. Lưu dữ liệu và theme trên thiết bị bằng `localStorage`.
-7. Dashboard developer theo dõi 10 artefact và telemetry dự án.
+4. Quản lý chủ đề và sidebar thư viện; dữ liệu chủ đề cập nhật theo kho từ.
+5. Khu vực Ôn tập tách khỏi Từ điển, gồm Lịch sử học tập, Phân tích năng lực, Làm bài Test và Thống kê kết quả.
+6. Flashcard ôn tập, trộn thẻ, bài test 10–15 câu bằng tiếng Anh và hiển thị kết quả từng câu.
+7. Import JSON/CSV và export JSON/CSV.
+8. Lưu dữ liệu, lịch sử test và theme trên thiết bị bằng `localStorage`.
+9. Dashboard developer theo dõi 10 artefact, PM edit và telemetry dự án.
 
 ## 4. Out-of-scope
 
@@ -42,4 +44,10 @@ MVP là static HTML/CSS/JS, không build step và không phụ thuộc mạng sa
 
 ## Telemetry
 
-Tool: Codex + VS Code · Token(est): ước tính · Thời gian người thật: 0.5h · Vòng lặp: 1 · Rework: 0 · PM-edit: 1.
+Tool: Codex + VS Code · Token(est): ước tính · Thời gian người thật: 0.5h · Vòng lặp: 1 · Rework: 0 · PM-edit: 2.
+
+## PM-edit log
+
+| # | File/section | Loại sửa | Lý do | Ảnh hưởng estimate |
+|---:|---|---|---|---:|
+| 1 | In-scope MVP | Scope | Bổ sung chủ đề, khu vực Ôn tập và bài test | +1.0h |

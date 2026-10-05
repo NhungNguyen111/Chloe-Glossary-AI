@@ -11,6 +11,10 @@
 | US-05 | Tôi muốn ôn tập | Flashcard lật được, chuyển thẻ, đánh dấu mastered |
 | US-06 | Tôi muốn mang dữ liệu đi | Export JSON/CSV tạo file tải xuống hợp lệ |
 | US-07 | Tôi muốn nạp dữ liệu có sẵn | Import JSON/CSV; từ trùng bị bỏ qua và có thông báo |
+| US-08 | Tôi muốn tạo chủ đề | Thêm chủ đề mới; topic hiển thị trong Từ điển và nhận term mới |
+| US-09 | Tôi muốn làm bài test | Tạo đề 10–15 câu bằng tiếng Anh, gồm nghĩa, phát âm, ngữ cảnh đúng/sai và multi-answer |
+| US-10 | Tôi muốn xem kết quả test | Hiển thị số đúng/tổng, đáp án đúng, đáp án sai màu đỏ và đáp án đúng màu xanh |
+| US-11 | Tôi muốn theo dõi năng lực | Lưu lịch sử test, thời gian làm, xu hướng sai, mẹo nhớ và biểu đồ điểm |
 
 ## 2. NFR
 
@@ -19,6 +23,8 @@
 - **Privacy:** dữ liệu chỉ ở trình duyệt hiện tại; không gửi dữ liệu lên server.
 - **Compatibility:** Chrome/Edge/Safari phiên bản hiện đại; responsive từ 320px.
 - **Integrity:** normalize record khi import; không cho lưu thiếu term/meaning.
+- **Consistency:** kho test phải lấy dữ liệu trực tiếp từ thư viện; term mới trong thư viện được đưa vào pool test sau khi reload.
+- **Traceability:** mỗi PM edit liên quan đến feature phải được gán về SCOPE/SPEC hoặc artefact phù hợp trên Dashboard và Markdown.
 
 ## 3. Trạng thái dữ liệu
 
@@ -30,4 +36,11 @@ Import sai định dạng phải hiện toast; record thiếu `term` bị bỏ q
 
 ## Telemetry
 
-Tool: Codex · Thời gian người thật: 0.7h · Vòng lặp: 2 · Rework: 1 · PM-edit: 2.
+Tool: Codex · Thời gian người thật: 0.7h · Vòng lặp: 2 · Rework: 1 · PM-edit: 3.
+
+## PM-edit log
+
+| # | File/section | Loại sửa | Lý do | Ảnh hưởng estimate |
+|---:|---|---|---|---:|
+| 1 | User stories / Review | Feature | Tách Ôn tập thành các mục chức năng độc lập | +1.0h |
+| 2 | User stories / Test | Feature + UI | Bổ sung đề test nhiều dạng và kết quả chi tiết | +2.0h |
